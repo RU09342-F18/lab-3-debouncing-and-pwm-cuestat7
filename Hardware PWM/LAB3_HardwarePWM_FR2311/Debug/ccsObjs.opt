@@ -1,0 +1,1 @@
+"./ButtonSetup.obj" "./TimerB0Setup.obj" "./TimerB1Setup.obj" "./main.obj" "../lnk_msp430fr2311.cmd" -llibc.a 
