@@ -1,18 +1,7 @@
 # Hardware PWM
-Now that you have done the software version of PWM, now it is time to start leveraging the other features of these Timer Modules.
+Boards Used - MSP430G2553, MSP430FR2311
+## Functionality
+These programs, indentical to software PWM, controls the brightness of an LED. The LED's brightness is controlled by a button where the brightness starts at 0% and increases by 10% untill it reaches 100% and drops back to 0. The button is debounced in that it will strictly trigger the interrupt once.
 
-## Task
-You need to replicate the same behavior as in the software PWM, only using the Timer Modules ability to directly output to a GPIO Pin instead of managing them in software. One way to thing about what should happen is that unless your are doing some other things in your code, your system should initialize, set the Timer Modules, and then turn off the CPU.
-
-## Deliverables
-You will need to have two folders in this repository, one for each of the processors that you used for this part of the lab. Remember to replace this README with your own.
-
-### Hints
-Read up on the P1SEL registers as well as look at the Timer modules ability to multiplex.
-
-## Extra Work
-### Using ACLK
-Some of these microprocessors have a built in ACLK which is extremely slow compared to your up to 25MHz available on some of them. What is the overall impact on the system when using this clock? Can you actually use your PWM code with a clock that slow?
-
-### Ultra Low Power
-Using a combination of ACLK, Low Power Modes, and any other means you may deem necessary, optimize this PWM code to run at 50% duty cycle with a LED on the MSP430FR5994. In particular, time how long your code can run on the fully charged super capacitor. You do not need to worry about the button control in this case, and you will probably want to disable all the GPIO that you are not using (nudge, nudge, hint, hint).
+## Description of code
+To achieve desired functionality the port 1, Timer0, and Timer 1 interrupt vectors were used. The Timer1 is responsibile for the button debouncing and handles that the same was as previously mentioned. TimerA0 uses CRR0 and CCR1 where TimerA is setup to be in OUT mode 7 which Resets/Sets on CCR1/CCR0 respectively. Using these two compare registers is how the PWM and duty cycle is controlled for the LED output. This also reduces the required interrupt vectors by 2 in contrast to the software PWM. The button interrupt increases the CCR1 value by 100 which increases the duty cycle by 10% and in turn increases the brightness of the LED. 
